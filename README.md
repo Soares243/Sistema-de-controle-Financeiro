@@ -1,18 +1,24 @@
-# SISTEMA DE CONTROLE FINANCEIRO
 
-**Atividade:** Avaliação de Produto 1 (AP1)  
-**Componentes do grupo:** [PREENCHER NOMES COMPLETOS ANTES DE ENTREGAR]
+# 💳Sistema-Controle-Financeiro
+O projeto escolhido tem como objetivo implementar uma API em Java que utilize Spring Boot e o banco de dados MySql.
+ uma API REST desenvolvida em Java com Spring Boot e MySQL. Seu objetivo é permitir o cadastro de usuários, contas, categorias e lançamentos, facilitando o registro e a consulta de receitas e despesas.
 
-## Objetivo e escopo
+## 🗿Integrantes ​
 
-API REST para cadastrar usuários, contas, categorias e lançamentos de receitas e despesas. Esta entrega contempla **a primeira etapa**: CRUD nas quatro entidades, interface OpenAPI/Swagger, validação de entrada e organização MVC em camadas. Também há uma regra de negócio, consulta filtrada e teste unitário. A autenticação e o controle de acesso, exigidos para o **projeto completo**, ficam para a etapa seguinte. **Não use esta versão com dados financeiros reais em um servidor público:** os endpoints ainda não exigem autenticação.
+- Ester Soares Serfaim
+- Gabriel Soero
+- João Victor Ressoni
+- Aruã Paulo
+- Mateus Lucas
 
-## Tecnologias
+## 📄​Requisitos do projeto
 
-- Java 21; Spring Boot 3.5.7; Maven; Spring Web; Spring Data JPA; Bean Validation.
-- MySQL 8 ou superior; springdoc-openapi 2.8.13 (Swagger UI).
-- JUnit 5 e Mockito para testes unitários.
-
+- **Tecnologias:** Java 21, Spring Boot, Maven e MySQL.
+- **Arquitetura:** organização em camadas, no mínimo quatro entidades relevantes e pelo menos dois tipos de relacionamento entre entidades.
+- **Funcionalidades:** operações CRUD, regras de negócio, filtros ou consultas personalizadas, paginação e ordenação.
+- **Validação e segurança:** DTOs de requisição e resposta, validação de dados, tratamento centralizado de exceções, autenticação e controle básico de acesso.
+- **Testes e documentação:** testes unitários com JUnit e Mockito, documentação OpenAPI/Swagger e coleção de requisições ou documentação equivalente.
+- **Entrega:** controle de versão com Git, instruções de instalação e execução neste README, apresentação e demonstração da aplicação.
 ## Executar
 
 1. Instale **JDK 21**, Maven 3.6.3 ou superior e MySQL. Confira com `java -version` e `mvn -version`.
