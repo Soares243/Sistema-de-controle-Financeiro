@@ -4,10 +4,12 @@ import br.edu.faculdade.financeiro.service.ContaService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.net.URI;
 import java.util.List;
 
 @RestController @RequestMapping("/api/contas")
+@SecurityRequirement(name = "bearerAuth")
 public class ContaController {
     private final ContaService service;
     public ContaController(ContaService service) { this.service=service; }

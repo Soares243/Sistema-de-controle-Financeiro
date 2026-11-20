@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
 import org.springframework.data.domain.*;
 import java.net.URI;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController @RequestMapping("/api/lancamentos")
+@SecurityRequirement(name = "bearerAuth")
 public class LancamentoController {
     private final LancamentoService service;
     public LancamentoController(LancamentoService service) { this.service=service; }

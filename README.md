@@ -1,57 +1,71 @@
+# Sistema de controle financeiro
 
-# 💳Sistema-Controle-Financeiro
-O projeto escolhido tem como objetivo implementar uma API em Java que utilize Spring Boot e o banco de dados MySql.
- uma API REST desenvolvida em Java com Spring Boot e MySQL. Seu objetivo é permitir o cadastro de usuários, contas, categorias e lançamentos, facilitando o registro e a consulta de receitas e despesas.
+API em Java com Spring Boot e MySQL para gerenciar usuarios, contas, categorias e lancamentos financeiros.
 
-## 🗿Integrantes ​
+## Funcionalidades
 
-- Ester Soares Serfaim
-- Gabriel Soero
-- João Victor Ressoni
-- Aruã Paulo
-- Mateus Lucas
+- Cadastro, login e autenticacao com JWT.
+- CRUD de usuarios, contas, categorias e lancamentos.
+- Filtros, paginacao e ordenacao dos lancamentos.
+- Validacao dos dados e protecao dos endpoints.
 
-## 📄​Requisitos do projeto
+## Tecnologias
 
-- **Tecnologias:** Java 21, Spring Boot, Maven e MySQL.
-- **Arquitetura:** organização em camadas, no mínimo quatro entidades relevantes e pelo menos dois tipos de relacionamento entre entidades.
-- **Funcionalidades:** operações CRUD, regras de negócio, filtros ou consultas personalizadas, paginação e ordenação.
-- **Validação e segurança:** DTOs de requisição e resposta, validação de dados, tratamento centralizado de exceções, autenticação e controle básico de acesso.
-- **Testes e documentação:** testes unitários com JUnit e Mockito, documentação OpenAPI/Swagger e coleção de requisições ou documentação equivalente.
-- **Entrega:** controle de versão com Git, instruções de instalação e execução neste README, apresentação e demonstração da aplicação.
-## Executar
+- JDK 21 a 25
+- Maven
+- MySQL
 
-1. Instale **JDK 21**, Maven 3.6.3 ou superior e MySQL. Confira com `java -version` e `mvn -version`.
-2. Inicie o MySQL e configure `DB_USER`, `DB_PASSWORD` e, se necessário, `DB_URL`. O padrão é `jdbc:mysql://localhost:3306/controle_financeiro?createDatabaseIfNotExist=true&serverTimezone=UTC`. O usuário precisa de permissão para criar o banco ou, alternativamente, crie-o manualmente com `CREATE DATABASE controle_financeiro;`.
-3. Na pasta que contém `pom.xml`, execute `mvn test` e `mvn spring-boot:run`.
-4. Abra `http://localhost:8080/swagger-ui.html`. A especificação JSON está em `http://localhost:8080/v3/api-docs`.
+## Como executar no Windows
 
-No PowerShell, por exemplo: `$env:DB_USER="root"; $env:DB_PASSWORD="sua_senha"; mvn spring-boot:run`.
-O projeto usa `ddl-auto=update` apenas para facilitar a demonstração acadêmica; em produção, use migrações versionadas.
+1. Inicie o MySQL e crie o banco:
 
-## Estrutura MVC e responsabilidades
+```sql
+CREATE DATABASE controle_financeiro;
+```
 
-| Pasta | Responsabilidade |
-| --- | --- |
-| `model` | Entidades JPA e enum de receita/despesa |
-| `repository` | Persistência e consultas Spring Data |
-| `service` | Regras de negócio e transações |
-| `controller` | Requisições HTTP e respostas REST |
-| `dto` | Contratos de entrada e saída, sem expor entidades |
-| `error` | Exceções e respostas de erro centralizadas |
+2. Configure o Java na terminal:
 
-Relacionamentos: um usuário tem várias contas (`@OneToMany`); uma conta pertence a um usuário (`@ManyToOne`); lançamentos pertencem a uma conta e a uma categoria (`@ManyToOne`). Os valores monetários usam `BigDecimal`.
+```powershell
+$env:JAVA_HOME="C:\Program Files\Java\jdk-25.0.5.0.2"
+$env:Path="$env:JAVA_HOME\bin;$env:Path"
+```
 
-## Endpoints e demonstração
+3. Na pasta do projeto, configure o banco e execute:
 
-Cada recurso possui `POST /api/{recurso}`, `GET /api/{recurso}`, `GET /api/{recurso}/{id}`, `PUT /api/{recurso}/{id}` e `DELETE /api/{recurso}/{id}`. Recursos: `usuarios`, `contas`, `categorias`, `lancamentos`. A criação retorna HTTP 201 e localização; exclusão retorna 204. Consulte [docs/REQUISICOES.md](docs/REQUISICOES.md) para exemplos completos e roteiro de apresentação.
+```powershell
+$env:DB_USER="root"
+$env:DB_PASSWORD="sua_senha"
+$env:DB_URL="jdbc:mysql://localhost:3306/controle_financeiro?createDatabaseIfNotExist=true&serverTimezone=UTC"
+$env:JWT_SECRET="uma-chave-local-com-pelo-menos-32-caracteres"
+mvn spring-boot:run
+```
 
-Exemplo de consulta: `GET /api/lancamentos?contaId=1&page=0&size=10&sort=data&direction=desc`. Só `id`, `data`, `valor` e `descricao` são aceitos na ordenação. O valor deve ser positivo; o tipo do lançamento deve coincidir com o da categoria. Categorias, contas e usuários associados a registros dependentes não podem ser excluídos. O e-mail deve ser único. Erros de validação retornam HTTP 400, recursos inexistentes HTTP 404 e conflitos HTTP 409.
+O servidor sera iniciado em http://localhost:8080.
 
-## Próxima etapa do projeto completo
+## Como usar
 
-Implementar Spring Security com senha cifrada e autenticação, autorização por usuário, testes de integração com MySQL, migrações Flyway e relatórios financeiros. Esta AP1 não afirma cumprir esses requisitos futuros.
+Abra o Swagger em http://localhost:8080/swagger-ui.html.
 
-## Versionamento
+1. Execute `POST /api/auth/cadastro` com nome, e-mail e senha de pelo menos 8 caracteres.
+2. Execute `POST /api/auth/login`.
+3. Copie o token JWT e selecione **Authorize** no Swagger.
+4. Cadastre uma conta e uma categoria.
+5. Use os IDs cadastrados para criar receitas e despesas.
 
-Projeto inicial preparado para Git. Após descompactar, execute `git init`, `git add .` e `git commit -m "Entrega AP1 controle financeiro"` se desejar criar seu próprio histórico.
+Exemplo de cadastro:
+
+```json
+{
+  "nome": "Ana",
+  "email": "ana@example.com",
+  "senha": "senha123"
+}
+```
+
+## Testes
+
+```powershell
+mvn test
+```
+
+O Swagger em formato JSON tambem fica disponivel em http://localhost:8080/v3/api-docs.

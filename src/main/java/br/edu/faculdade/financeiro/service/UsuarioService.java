@@ -5,24 +5,34 @@ import br.edu.faculdade.financeiro.model.Usuario;
 import br.edu.faculdade.financeiro.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 
 @Service
 public class UsuarioService {
     private final UsuarioRepository usuarios;
     private final ContaRepository contas;
-    public UsuarioService(UsuarioRepository usuarios, ContaRepository contas) { this.usuarios=usuarios; this.contas=contas; }
+    private final PasswordEncoder passwordEncoder;
+    public UsuarioService(UsuarioRepository usuarios, ContaRepository contas, PasswordEncoder passwordEncoder) {
+        this.usuarios=usuarios;
+        this.contas=contas;
+        this.passwordEncoder=passwordEncoder;
+    }
     public Usuario obterEntidade(Long id) { return usuarios.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Usuário", id)); }
     @Transactional public UsuarioResponse criar(UsuarioRequest r) {
-        if (usuarios.existsByEmailIgnoreCase(r.email())) throw new RegraNegocioException("E-mail já cadastrado.");
-        return UsuarioResponse.de(usuarios.save(new Usuario(r.nome().trim(), r.email().trim().toLowerCase())));
+        String nome = r.nome().trim();
+        String email = r.email().trim().toLowerCase();
+        if (usuarios.existsByEmailIgnoreCase(email)) throw new RegraNegocioException("E-mail já cadastrado.");
+        return UsuarioResponse.de(usuarios.save(new Usuario(
+            nome, email, passwordEncoder.encode(r.senha())
+        )));
     }
     @Transactional(readOnly=true) public UsuarioResponse obter(Long id) { return UsuarioResponse.de(obterEntidade(id)); }
     @Transactional(readOnly=true) public List<UsuarioResponse> listar() { return usuarios.findAll().stream().map(UsuarioResponse::de).toList(); }
     @Transactional public UsuarioResponse atualizar(Long id, UsuarioRequest r) {
         Usuario u=obterEntidade(id);
         if (usuarios.existsByEmailIgnoreCaseAndIdNot(r.email(), id)) throw new RegraNegocioException("E-mail já cadastrado.");
-        u.atualizar(r.nome().trim(), r.email().trim().toLowerCase());
+        u.atualizar(r.nome().trim(), r.email().trim().toLowerCase(), passwordEncoder.encode(r.senha()));
         return UsuarioResponse.de(u);
     }
     @Transactional public void excluir(Long id) {

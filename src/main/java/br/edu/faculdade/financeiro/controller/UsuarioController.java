@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
 import java.net.URI;
 import java.util.List;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController @RequestMapping("/api/usuarios")
+@SecurityRequirement(name = "bearerAuth")
 public class UsuarioController {
     private final UsuarioService service;
     public UsuarioController(UsuarioService service) { this.service=service; }

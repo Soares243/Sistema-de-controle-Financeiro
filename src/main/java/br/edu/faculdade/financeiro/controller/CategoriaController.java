@@ -4,10 +4,12 @@ import br.edu.faculdade.financeiro.service.CategoriaService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.net.URI;
 import java.util.List;
 
 @RestController @RequestMapping("/api/categorias")
+@SecurityRequirement(name = "bearerAuth")
 public class CategoriaController {
     private final CategoriaService service;
     public CategoriaController(CategoriaService service) { this.service=service; }

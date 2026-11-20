@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.AuthenticationException;
 import java.time.Instant;
 import java.util.*;
 
@@ -24,6 +25,8 @@ public class ApiExceptionHandler {
     ResponseEntity<Erro> corpo(HttpMessageNotReadableException e) { return resposta(HttpStatus.BAD_REQUEST, "JSON inválido ou valor de enumeração incorreto.", null); }
     @ExceptionHandler(DataIntegrityViolationException.class)
     ResponseEntity<Erro> integridade(DataIntegrityViolationException e) { return resposta(HttpStatus.CONFLICT, "Operação viola restrição do banco de dados.", null); }
+    @ExceptionHandler(AuthenticationException.class)
+    ResponseEntity<Erro> autenticacao(AuthenticationException e) { return resposta(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos.", null); }
     private ResponseEntity<Erro> resposta(HttpStatus status, String mensagem, Object detalhes) {
         return ResponseEntity.status(status).body(new Erro(Instant.now(), status.value(), mensagem, detalhes));
     }
